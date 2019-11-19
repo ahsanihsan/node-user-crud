@@ -14,7 +14,7 @@ Offering you a clean and MVC structured code with the best file structure. User 
   4) jsonwebtoken
   5) Body Parser
 
-# How you can get started?
+# How can you get started?
   Just clone the repo and run
   
     npm install
