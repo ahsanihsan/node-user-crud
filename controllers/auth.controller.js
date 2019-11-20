@@ -3,12 +3,10 @@ const router = require("express")();
 
 const User = require("../models/user.model");
 const jwtEngine = require("../modules/authorize");
+
 router.post(
   "/login",
   (req, res, next) => {
-    // do the validtion stuff over here, this is the middlesares
-    // upon validating if success then jump to next middleware
-    // using return next();
     const userName = req.body.user_name;
     const password = req.body.password;
     if (!userName || !password) {
@@ -66,49 +64,48 @@ router.post(
   }
 );
 
-// // Insert a laptop in the data sent
-// exports.create_user = function(req, res) {
-//   let body = req.body;
-//   User.find({ user_name: req.body.user_name })
-//     .then(record => {
-//       if (record && record.length > 0) {
-//         res.send({
-//           success: false,
-//           message:
-//             "Please enter a unique username " +
-//             req.body.user_name +
-//             " already exists."
-//         });
-//       } else {
-//         bcrypt.hash(body.password, 10, (err, hash) => {
-//           if (err) {
-//             res.send({
-//               success: false,
-//               message: "There was a problem, please try again later."
-//             });
-//           } else {
-//             body.password = hash;
-//             let user = new User(body);
-//             user.save(function(err) {
-//               if (err) {
-//                 res.send({
-//                   success: false,
-//                   error: err
-//                 });
-//               }
-//               res.send({ success: true, message: "User created successfully" });
-//             });
-//           }
-//         });
-//       }
-//     })
-//     .catch(err => {
-//       res.send({
-//         success: false,
-//         message: err
-//       });
-//     });
-// };
+router.post("/registration", (req, res, next) => {
+  let body = req.body;
+  User.find({ user_name: req.body.user_name })
+    .then(record => {
+      if (record && record.length > 0) {
+        res.send({
+          success: false,
+          message:
+            "Please enter a unique username " +
+            req.body.user_name +
+            " already exists."
+        });
+      } else {
+        bcrypt.hash(body.password, 10, (err, hash) => {
+          if (err) {
+            res.send({
+              success: false,
+              message: "There was a problem, please try again later."
+            });
+          } else {
+            body.password = hash;
+            let user = new User(body);
+            user.save(function(err) {
+              if (err) {
+                res.send({
+                  success: false,
+                  error: err
+                });
+              }
+              res.send({ success: true, message: "User created successfully" });
+            });
+          }
+        });
+      }
+    })
+    .catch(err => {
+      res.send({
+        success: false,
+        message: err
+      });
+    });
+});
 
 // exports.update_user = function(req, res) {
 //   let user_name = req.params.user_name;
